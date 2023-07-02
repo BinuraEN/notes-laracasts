@@ -62,10 +62,14 @@ class Router
                     die();
                 }
 
-                return require base_path($route['controller']);
+                return require base_path('Http/controllers/'.$route['controller']);
             }
         }
         $this->abort();
+    }
+
+    public function previousUrl(){
+        return $_SERVER['HTTP_REFERER'];
     }
 
     protected function abort($code = Response::NOT_FOUND)
@@ -74,6 +78,8 @@ class Router
         require base_path("views/{$code}.php");
         die();
     }
+
+
 
 }
 

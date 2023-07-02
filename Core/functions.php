@@ -29,23 +29,6 @@ function authorize($condition, $status = Response::FORBIDDEN)
     }
 }
 
-function login($user)
-{
-    $_SESSION['user'] = [
-        'email' => $user['email'],
-    ];
-}
-
-function logout(){
-    $_SESSION = [];
-    session_destroy();
-
-    $cookieParams = session_get_cookie_params();
-    setcookie('PHPSESSID','',time()-3600,$cookieParams['path'],$cookieParams['domain'],$cookieParams['secure'],$cookieParams['httponly']);
-
-    session_regenerate_id(true);
-}
-
 function base_path($path)
 {
     return BASE_PATH . $path;
@@ -55,4 +38,15 @@ function view($path, $attributes = [])
 {
     extract($attributes);
     require base_path('views/' . $path);
+}
+
+function redirect($path)
+{
+    header("location: {$path}");
+    die();
+}
+
+function old($key, $default = '')
+{
+    return \Core\Session::get('old')[$key] ?? $default;
 }
